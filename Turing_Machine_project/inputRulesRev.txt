@@ -1,0 +1,3 @@
+start t a L state1 state2
+state1 u s L state2 state3
+state3 5 i L state2 state4

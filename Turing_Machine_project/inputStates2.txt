@@ -1,0 +1,4 @@
+start 0 
+stat5 1
+stat6 0 
+stat7 1
