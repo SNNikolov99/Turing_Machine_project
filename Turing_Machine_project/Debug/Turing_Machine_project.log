@@ -1,2 +1,5 @@
-﻿  Turing_Machine_project.cpp
+﻿  TuringMachine.cpp
+C:\Users\simeo\Desktop\SDP\Turing_Machine_project\Turing_Machine_project\TuringMachine.cpp(67,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\simeo\Desktop\SDP\Turing_Machine_project\Turing_Machine_project\TuringMachine.cpp(173,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\simeo\Desktop\SDP\Turing_Machine_project\Turing_Machine_project\TuringMachine.cpp(178,20): warning C4018: '<': signed/unsigned mismatch
   Turing_Machine_project.vcxproj -> C:\Users\simeo\Desktop\SDP\Turing_Machine_project\Debug\Turing_Machine_project.exe

@@ -4,11 +4,26 @@
 using str = std::string;
 using stData = std::pair<std::string, bool>;
 
+void TuringMachine::copy(Tape _tape, stateList _states, rulesList _instructions)
+{
+	tape = _tape;
+	states = _states;
+	instructions = _instructions;
+	head = _tape.getStart();
+	currentState = _states[0];
+	cmpSucc = false;
+}
+
 TuringMachine::TuringMachine()
 {
 	cmpSucc = true;
 	head = nullptr;
 	currentState = { " ",1 };
+}
+
+TuringMachine::TuringMachine(Tape _tape, stateList _states, rulesList _instructions)
+{
+	copy(_tape, _states, _instructions);
 }
 
 
@@ -27,7 +42,11 @@ TuringMachine& TuringMachine::operator=(TuringMachine& other)
 
 TuringMachine::~TuringMachine()
 {
-	
+	tape.~Tape();
+	states.~stateList();
+	instructions.~rulesList();
+	head = nullptr;
+
 }
 
 bool TuringMachine::isComplete() {
@@ -57,7 +76,12 @@ void TuringMachine::setData(str statesData, str tapeData,str instructionsData)
 
 }
 
-//TODO: проверка дали моментното състояние е валидно,тоест има го в списъка със състояния.
+void TuringMachine::setData(Tape _tape, stateList _states, rulesList _instructions)
+{
+	copy(_tape, _states, _instructions);
+}
+
+
 void TuringMachine::processWithoutOutput()
 {
 	for (int i = 0; i < instructions.size(); i++) {
@@ -68,12 +92,18 @@ void TuringMachine::processWithoutOutput()
 			return;
 		}
 		else {
+			//Проверяваме  дали моментното състояние е валидно.Ако не е - машината да спира работа.
 			if (!this->states.isThereAState(currentState.first)) {
 				std::cerr << "Unknown state detected.Processing will stop.";
 				return;
 			}
-			if (head->val == instructions[i].checkSymbol) {
+
+			/*Ако символът на главата и моментното състояние съвпадат с тези на моментната инструкция,
+			да се извърши преходът.Иначе нищо да не се извършва.
+			*/
+			if (head->val == instructions[i].checkSymbol && currentState.first == instructions[i].checkState) {
 				//Различни случаи за посоките
+
 				if (instructions[i].direction == 'R') {
 					//проверяваме дали следващо място на лентата съществува.Ако не,го създаваме.
 					if (head->next != nullptr) {
@@ -81,7 +111,7 @@ void TuringMachine::processWithoutOutput()
 						head = head->next;
 					}
 					else {
-						head->next = new tapeNode(' ');
+						head->next = new tapeNode('_');
 						head->val = instructions[i].writeNewSymbol;
 						head->next->previous = head;
 						head = head->next;
@@ -96,7 +126,7 @@ void TuringMachine::processWithoutOutput()
 						head = head->previous;
 					}
 					else {
-						head->previous = new tapeNode(' ');
+						head->previous = new tapeNode('_');
 						head->val = instructions[i].writeNewSymbol;
 						head->previous->next = head;
 						head = head->previous;
@@ -110,56 +140,14 @@ void TuringMachine::processWithoutOutput()
 					std::cerr << "Direction like this does not exist";
 					return;
 				}
-				//Променяме състоянието на следващото ако символът на лентата съвпада с този на командата
+				//Променяме моментното състояние на следващото 
 				currentState = states.getStateByName(instructions[i].nextStateName);
 
 			}
-
-			else {
-				//Копиран код от предишния случай.Проверяваме пак за същите неща.
-				if (instructions[i].direction == 'R') {
-
-					if (head->next != nullptr) {
-						head->val = instructions[i].writeNewSymbol;
-						head = head->next;
-					}
-					else {
-						head->next = new tapeNode(' ');
-						head->val = instructions[i].writeNewSymbol;
-						head->next->previous = head;
-						head = head->next;
-
-					}
-				}
-
-				else if (instructions[i].direction == 'L') {
-
-					if (head->previous != nullptr) {
-						head->val = instructions[i].writeNewSymbol;
-						head = head->previous;
-					}
-					else {
-						head->previous = new tapeNode(' ');
-						head->val = instructions[i].writeNewSymbol;
-						head->previous->next = head;
-						head = head->previous;
-
-					}
-				}
-				else if (instructions[i].direction == 'N') {
-					head->val = instructions[i].writeNewSymbol;
-				}
-				else {
-					std::cerr << "Direction like this does not exist";
-					return;
-				}
-				//Променяме състоянието към следващото ако символът на лентата не съвпада с този на командата
-				currentState = states.getStateByName(instructions[i].nextStateNameIfFalse);
-			}
 		}
 	}
-	//Ако е изпълнен целият лист с команди и машината не е гръмнала досега значи  приключва работа успешно
-	cmpSucc = 1;
+	//Ако е изпълнен целият лист с команди и машината не е гръмнала досега значи приключва работа успешно
+	cmpSucc = true;
 }
 
 
@@ -174,6 +162,11 @@ void TuringMachine::proccess(str filename)
 Tape TuringMachine::returnTape()
 {
 	return tape;
+}
+
+rulesList TuringMachine::getInstructionList()
+{
+	return this->instructions;
 }
 
 stateList TuringMachine::getStateList()
@@ -192,11 +185,12 @@ void TuringMachine::concat(TuringMachine& other)
 	tapeNode* curr = other.tape.getStart();
 	tapeNode* prev = this->tape.findEnd();
 	
-	while (curr) {
+	while (curr->next) {
 		tbc = new tapeNode(curr->val);
 		prev->next = tbc;
 		tbc->previous = prev;
 		tbc = tbc->next;
+		prev = prev->next;
 		curr = curr->next;
 	}
 
@@ -208,24 +202,22 @@ void TuringMachine::concat(TuringMachine& other)
 	//Обединяваме списъците с инструкции
 	for (int i = 0; i < other.instructions.size(); i++) {
 		this->instructions.push(other.instructions[i]);
-	}
-
-	
-	
+	}	
 }
 
-void TuringMachine::machineSwitcher(TuringMachine A, TuringMachine B,const std::string instructions)
+void TuringMachine::machineSwitcher(TuringMachine A, TuringMachine B)
 {
 	
 	this->processWithoutOutput();
 
-	//Ако мометната машина върне истина,входът се изпълнява върху първата машина ,иначе-върху втората.
+	//Ако мометната машина върне истина,входът от инструкции се изпълнява върху първата машина ,иначе-върху втората.
 	if (this->isComplete()) {
-		
+		A.instructions = this->instructions;
 		A.processWithoutOutput();
 		A.tape.print();
 	}
 	else {
+		B.instructions = this->instructions;
 		B.processWithoutOutput();
 		B.tape.print();
 	}
