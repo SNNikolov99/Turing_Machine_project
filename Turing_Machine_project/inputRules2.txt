@@ -1,3 +1,3 @@
-state1 a b L state5 state7
-state5 c f R state7 state6
-state6 z q L state5 state7
+a state1 b L state5 
+s state5 f R state6 
+z state6 q L state1 

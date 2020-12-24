@@ -1,6 +1,6 @@
 #include "stateList.h"
 #include <fstream>
-#include<cassert>
+#include <cassert>
 
 using stData = std::pair<std::string, bool>;
 

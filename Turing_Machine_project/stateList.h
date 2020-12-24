@@ -1,4 +1,7 @@
 #pragma once
+#ifndef STATELIST_H
+#define STATELIST_H
+
 #include<iostream>
 #include<vector>
 
@@ -24,4 +27,4 @@ public:
 	void printList();//извежда списъка
 
 };
-
+#endif

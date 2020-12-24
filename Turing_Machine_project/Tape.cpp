@@ -141,7 +141,7 @@ tapeNode* Tape::findEnd()
 void Tape::print()
 {
 	tapeNode* current = start;
-	while (current->next->val != ' ') {
+	while (current->next) {
 		std::cout << current->val;
 		current = current->next;
 	}

@@ -38,7 +38,9 @@ void TMTest() {
 void tapeRevTest() {
     TuringMachine T;
     T.setData("inputStates.txt", "inputTape1.txt", "inputRulesRev.txt");
-    T.proccess("TMoutput.txt");
+ //   T.proccess("TMoutput.txt");
+    T.returnTape().print();
+    
 }
 
 void ConcTest() {
@@ -46,34 +48,36 @@ void ConcTest() {
     A.setData("inputStates.txt","inputTape1.txt", "inputRules1.txt");
     B.setData("inputStates2.txt","inputTape2.txt","inputRules2.txt");
     A.concat(B);
-    A.proccess("TMoutput.txt");
-    A.getStateList().printList();
     
-   
- 
-    
+    A.returnTape().print();
 }
 
 void TMswitcher() {
-    TuringMachine A, B;
+    TuringMachine A, B, C;
+    A.setData("inputStates.txt", "inputTape1.txt", "inputRules1.txt");
+    B.setData("inputStates2.txt", "inputTape2.txt", "inputRules2.txt");
+    C.setData("inputStates3.txt", "inputTape3.txt", "inputRules1.txt");
+    C.machineSwitcher(A, B);
     
-  //  A.machineSwitcher(B, C,key, "inputStates2.txt", "inputFalseStates1.txt", "inputStates.txt", "inputFalseStates.txt",
-   //     "inputStates2.txt", "inputFalseStates1.txt", "inputTape1.txt");
 }
 
 
 /*TODO: 
--Направи още тестови случаи.Само няколко тестови файла не са достатъчни
+-Направи клас за многолентова машина на Тюринг.Нека да има същите член данни както еднолентовата машина на Тюринг,
+ но tape да се замени с vector<tape>.Преобразуването да става чрез слепването на всички ленти в една.
+
+-Тествай още малко TMswitcher
+-Добави възможността една тюринг машина да работи върху някаква лента подадена като вход
 
 */
 int main()
 {
-   // tapeTest();
+    //tapeTest();
     //stateTest();
     //rulesTest();
     //TMTest();
-    tapeRevTest();
-   //ConcTest();
-  // TMswitcher();
+    //tapeRevTest();
+    ConcTest();
+   //TMswitcher();
 }
 

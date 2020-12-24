@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="multiTapedTM.cpp" />
     <ClCompile Include="rulesList.cpp" />
     <ClCompile Include="stateList.cpp" />
     <ClCompile Include="Tape.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="Turing_Machine_project.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="multiTapedTM.h" />
     <ClInclude Include="rulesList.h" />
     <ClInclude Include="stateList.h" />
     <ClInclude Include="Tape.h" />

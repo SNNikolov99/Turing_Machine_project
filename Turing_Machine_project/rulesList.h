@@ -1,39 +1,45 @@
 #pragma once
+#ifndef RULESLIST_H
+#define RULESLIST_H
+
 #include <string>
 #include <vector>
 
 
 //идея : (S,0,1,L,A,B)
-struct state_rule 
+struct instruction
 {
 	using str = std::string;
 
-	str current;
+	
 	char checkSymbol;
+	str checkState; //Променлива с цел проверка на моментното състояние
 	char writeNewSymbol;//записва нов символ под иглата
 	char direction;//мести иглата наляво или надясно
-	str nextStateName;//новото състояние ако правилото върне истина
-	str nextStateNameIfFalse;//новото състояние ако правилото върне лъжа
+	str nextStateName;//следващото състояние 
 	
-	state_rule(str _current, char _check, char _write, char _dir, str _nextTrue, str _nextFalse) :
-		current(_current), checkSymbol(_check), writeNewSymbol(_write),
-		direction(_dir), nextStateName(_nextTrue), nextStateNameIfFalse(_nextFalse) {};
+	
+	instruction( char _check,str _checkState, char _write, char _dir, str _nextTrue) :
+		checkState(_checkState), checkSymbol(_check), writeNewSymbol(_write),
+		direction(_dir), nextStateName(_nextTrue){};
 
 };
 
 class rulesList{
 private:
-	std::vector<state_rule> list;
+	std::vector<instruction> list;
 
 public:
 	rulesList();
+	rulesList& operator =(rulesList&);
 	~rulesList();
-	state_rule operator[](int);
-	void push(const state_rule);
+	instruction operator[](int);
+	void push(const instruction);
 	void input(std::string);
 	void print();
-	std::vector<state_rule>& getList();
+	std::vector<instruction>& getList();
 	size_t size();
 
 };
+#endif 
 

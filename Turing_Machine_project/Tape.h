@@ -1,4 +1,6 @@
 #pragma once
+#ifndef TAPE_H
+#define TAPE_H
 
 #include<string>
 #include<fstream>
@@ -47,3 +49,4 @@ public:
 	tapeNode* getStart();
 
 };
+#endif
