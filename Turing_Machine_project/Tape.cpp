@@ -6,11 +6,13 @@ void Tape::copy(Tape& other)
 	
 	if (other.start == nullptr) {
 		start = nullptr;
+		return;
 	}
 
 
 	if (start == nullptr) {
 		start = other.start;
+		return;
 	}
 
 
@@ -32,6 +34,8 @@ void Tape::copy(Tape& other)
 void Tape::erase()
 {
 	if (start == nullptr)return;
+	//появява се необичаен тип грешка с действителен адрес,който уж трябва да го няма
+	else if (start != nullptr && (start->val <= ' ' || start->val >'~')) return;
 	else {
 		tapeNode* current = start;
 		tapeNode* tobeDel = nullptr;
@@ -48,6 +52,11 @@ void Tape::erase()
 
 Tape::Tape() {
 	start = nullptr;
+}
+
+Tape::Tape(std::string filename)
+{
+	this->input(filename);
 }
 
 Tape& Tape::operator=(Tape& other)
@@ -96,6 +105,27 @@ void Tape::input(std::string filename)
 	else std::cerr << "Cannot open file!";
 }
 
+void Tape::push_back(tapeNode* current)
+{
+	if (this->start == nullptr) {
+		start = current;
+		return;
+	}
+
+	if (current->val >= ' ' && current->val <= '~') {
+		tapeNode* oldEnd = this->findEnd();
+		oldEnd->next = current;
+		current->previous = oldEnd;
+		return;
+	}
+	else {
+		std::cerr << "This symbol is prohibited";
+		return;
+	}
+
+
+}
+
 
 
 tapeNode* Tape::inputFromBuffer(std::vector<tapeNode*> buffer)
@@ -131,7 +161,7 @@ void Tape::output(std::string filename)
 tapeNode* Tape::findEnd()
 {
 	tapeNode* current = start;
-	while (current->next->val != ' ') {
+	while (current->next) {
 		current = current->next;
 	}
 

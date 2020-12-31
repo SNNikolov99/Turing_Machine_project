@@ -31,12 +31,14 @@ private:
 	void erase();
 public:
 	Tape();
+	Tape(std::string);
 	Tape& operator =(Tape&);
 	~Tape();
 	//set-ър за стартовата позиция
 	void setStart(tapeNode*);
 	//Въвеждане на информация от текстов файл
 	void input(std::string);
+	void push_back(tapeNode*);
 	//взима и навързва клетките от буфер
 	tapeNode* inputFromBuffer(std::vector<tapeNode*>);
 	//извеждане на информация в текстов файл

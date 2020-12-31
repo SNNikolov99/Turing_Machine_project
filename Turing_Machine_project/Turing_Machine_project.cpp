@@ -7,6 +7,7 @@
 #include"stateList.h"
 #include "rulesList.h"
 #include "TuringMachine.h"
+#include "multiTapedTM.h"
 
 
 void tapeTest() {
@@ -18,7 +19,6 @@ void tapeTest() {
 void stateTest() {
     stateList L;
     L.setStates("inputStates.txt");
-   // L.setFalseStates("inputFalseStates1.txt");
     L.printList();
 }
 
@@ -38,7 +38,6 @@ void TMTest() {
 void tapeRevTest() {
     TuringMachine T;
     T.setData("inputStates.txt", "inputTape1.txt", "inputRulesRev.txt");
- //   T.proccess("TMoutput.txt");
     T.returnTape().print();
     
 }
@@ -62,13 +61,31 @@ void TMswitcher() {
 }
 
 
+void multiTapedTest() {
+    stateList states;
+    states.setStates("inputStates.txt");
+    rulesList instructions;
+    instructions.input("inputRules1.txt");
+    std::vector<Tape> tapes;
+
+    Tape tape1, tape2, tape3;
+    tapes.push_back(tape1);
+    tapes.push_back(tape2);
+   // tapes.push_back(tape3);
+
+    tapes[0].input("inputTape1.txt");
+    tapes[1].input("inputTape2.txt");
+    //tapes[2].input("inputTape3.txt");
+
+
+    multiTapedTM A(tapes,states,instructions);
+
+    TuringMachine res = A.as_TuringMachine();
+    res.returnTape().print();
+}
+
 /*TODO: 
--Направи клас за многолентова машина на Тюринг.Нека да има същите член данни както еднолентовата машина на Тюринг,
- но tape да се замени с vector<tape>.Преобразуването да става чрез слепването на всички ленти в една.
-
 -Тествай още малко TMswitcher
--Добави възможността една тюринг машина да работи върху някаква лента подадена като вход
-
 */
 int main()
 {
@@ -77,7 +94,8 @@ int main()
     //rulesTest();
     //TMTest();
     //tapeRevTest();
-    ConcTest();
+    //ConcTest();
    //TMswitcher();
+    multiTapedTest();
 }
 

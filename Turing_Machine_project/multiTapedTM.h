@@ -23,12 +23,16 @@ private:
 	bool cmpSucc;
 	//мометното състояние на машината
 	state currentState;
+
+	TuringMachine Returned;
 public:
+	
 	multiTapedTM();
+	multiTapedTM(std::vector<Tape>&, stateList&, rulesList&);
 	~multiTapedTM();
 	TuringMachine as_TuringMachine();//Превръща многолентова машина на тюринг в еднолентова
 
 };
 
-#endif // !MULTITAPEDTM_H
+#endif 
 

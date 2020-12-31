@@ -37,15 +37,15 @@ TuringMachine& TuringMachine::operator=(TuringMachine& other)
 		instructions = other.instructions;
 		currentState = other.currentState;
 	}
-	return* this;
+	return *this;
 }
 
 TuringMachine::~TuringMachine()
 {
-	tape.~Tape();
+	/*tape.~Tape();
 	states.~stateList();
 	instructions.~rulesList();
-	head = nullptr;
+	head = nullptr;*/
 
 }
 
@@ -79,6 +79,12 @@ void TuringMachine::setData(str statesData, str tapeData,str instructionsData)
 void TuringMachine::setData(Tape _tape, stateList _states, rulesList _instructions)
 {
 	copy(_tape, _states, _instructions);
+}
+
+void TuringMachine::setTape(Tape &t)
+{
+	tape = t;
+	head = t.getStart();
 }
 
 
@@ -177,7 +183,7 @@ stateList TuringMachine::getStateList()
 
 
 
-void TuringMachine::concat(TuringMachine& other)
+void TuringMachine::concat( TuringMachine& other)
 {
 	//обединяваме лентите в една
 	
@@ -205,7 +211,7 @@ void TuringMachine::concat(TuringMachine& other)
 	}	
 }
 
-void TuringMachine::machineSwitcher(TuringMachine A, TuringMachine B)
+void TuringMachine::machineSwitcher(TuringMachine& A, TuringMachine& B)
 {
 	
 	this->processWithoutOutput();
