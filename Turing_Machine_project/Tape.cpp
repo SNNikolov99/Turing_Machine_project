@@ -32,6 +32,7 @@ void Tape::copy(Tape& other)
 void Tape::erase()
 {
 	if (start == nullptr)return;
+	if (start != nullptr && (start->val <= ' ' || start->val > '~'))return;
 	else {
 		tapeNode* current = start;
 		tapeNode* tobeDel = nullptr;
@@ -96,6 +97,23 @@ void Tape::input(std::string filename)
 	else std::cerr << "Cannot open file!";
 }
 
+void Tape::push_back(tapeNode* tba)
+{
+	if (start == nullptr) {
+		start = tba;
+		return;
+	}
+
+	tapeNode* current = start;
+	while (current->next) {
+		current = current->next;
+	}
+
+	current->next = tba;
+	tba->previous = current;
+
+}
+
 
 
 tapeNode* Tape::inputFromBuffer(std::vector<tapeNode*> buffer)
@@ -131,7 +149,7 @@ void Tape::output(std::string filename)
 tapeNode* Tape::findEnd()
 {
 	tapeNode* current = start;
-	while (current->next->val != ' ') {
+	while (current->next) {
 		current = current->next;
 	}
 

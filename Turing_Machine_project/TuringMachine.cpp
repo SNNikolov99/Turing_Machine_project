@@ -81,6 +81,12 @@ void TuringMachine::setData(Tape _tape, stateList _states, rulesList _instructio
 	copy(_tape, _states, _instructions);
 }
 
+void TuringMachine::setTape(Tape& _tape)
+{
+	this->tape = _tape;
+	this->head = _tape.getStart();
+}
+
 
 void TuringMachine::processWithoutOutput()
 {

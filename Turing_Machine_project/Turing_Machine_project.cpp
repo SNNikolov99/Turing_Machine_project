@@ -7,6 +7,7 @@
 #include"stateList.h"
 #include "rulesList.h"
 #include "TuringMachine.h"
+#include "multiTapedTM.h"
 
 
 void tapeTest() {
@@ -61,6 +62,31 @@ void TMswitcher() {
     
 }
 
+void multiTaped() {
+    std::vector<Tape> tapes;
+    stateList states;
+    rulesList instructions;
+
+    states.setStates("inputStates.txt");
+    instructions.input("inputRules1.txt");
+
+    Tape a, b, c;
+    tapes.push_back(a);
+    tapes.push_back(b);
+    tapes.push_back(c);
+
+    tapes[0].input("inputTape1.txt");
+    tapes[1].input("inputTape2.txt");
+    tapes[2].input("inputTape3.txt");
+
+    multiTapedTM A(tapes, states, instructions);
+    TuringMachine B = A.as_TuringMachine();
+    B.returnTape().print();
+
+
+}
+
+
 
 /*TODO: 
 -Направи клас за многолентова машина на Тюринг.Нека да има същите член данни както еднолентовата машина на Тюринг,
@@ -77,7 +103,8 @@ int main()
     //rulesTest();
     //TMTest();
     //tapeRevTest();
-    ConcTest();
+    //ConcTest();
    //TMswitcher();
+    multiTaped();
 }
 

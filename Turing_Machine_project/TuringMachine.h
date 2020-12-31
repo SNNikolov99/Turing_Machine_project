@@ -43,6 +43,7 @@ public:
 	bool isComplete();
 	void setData(str,str,str);//вкарва данни за състоянията на машината и за нейната лента
 	void setData(Tape, stateList, rulesList);//вкарва данни за състоянията на машината и за нейната лента
+	void setTape(Tape&);
 	void proccess(str);//обработва лентата и я връща
 	void processWithoutOutput();//само обработва лентата
 	Tape returnTape();
