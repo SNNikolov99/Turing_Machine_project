@@ -6,39 +6,29 @@ multiTapedTM::multiTapedTM()
 	head = nullptr;
 }
 
-multiTapedTM::multiTapedTM(std::vector<Tape>& _tapes, stateList& _states, rulesList& _instructions)
-{
-	this->listOfTapes = _tapes;
-	this->states = _states;
-	this->instructions = _instructions;
-	cmpSucc = false;
-	currentState = _states[0];
-}
-
 multiTapedTM::~multiTapedTM()
 {
-	/*listOfTapes.~vector();
+	listOfTapes.~vector();
 	head = nullptr;
 	states.~stateList();
-	instructions.~rulesList();*/
+	instructions.~rulesList();
 
 }
 //Еднолентовата машина на тюринг може да се получим като слепим всичките ленти на многолентовата в една
 TuringMachine multiTapedTM::as_TuringMachine()
 {
-	//TuringMachine Returned;
-	Tape concTape;
-	Returned.setData(concTape, this->states, this->instructions);
-	
+	TuringMachine Returned;
 	
 	if (listOfTapes.empty()) {
+		Returned.getStateList() = this->states;
+		Returned.getInstructionList() = this->instructions;
 		Returned.returnTape().setStart(nullptr);
 
 		return Returned;
 	}
 
 	if (listOfTapes.size() == 1) {
-		Returned.setTape(listOfTapes[0]);
+		Returned.setData(listOfTapes[0], this->states, this->instructions);
 		return Returned;
 	}
 
@@ -52,6 +42,7 @@ TuringMachine multiTapedTM::as_TuringMachine()
 		като навързваме клетките с преходи.Извършваме това действие докато не свършат лентите.
 	*/
 
+	tapeNode* current = listOfTapes[0].findEnd();
 	tapeNode* tbc = nullptr;
 
 	for (size_t i = 1; i < listOfTapes.size(); i++) {
@@ -59,13 +50,16 @@ TuringMachine multiTapedTM::as_TuringMachine()
 		tapeNode* inTape = listOfTapes[i].getStart();
 		while (inTape->next) {
 			tbc = new tapeNode(inTape->val);
-			listOfTapes[0].push_back(tbc);
+			current->next = tbc;
+			tbc->previous = current;
+			current = current->next;
+			tbc = tbc->next;
 			inTape = inTape->next;
 		}
 
 	}
 
-	//Началото на лентата на еднолентовата машина е началото на първата лента от вектора с ленти
-	Returned.setTape(listOfTapes[0]);
+	//Началото на лентата та еднолентовата машина е началото на първата лента от вектора с ленти
+	Returned.returnTape().setStart (listOfTapes[0]. getStart() );
 	return Returned;
 }

@@ -43,7 +43,6 @@ public:
 	bool isComplete();
 	void setData(str,str,str);//вкарва данни за състоянията на машината и за нейната лента
 	void setData(Tape, stateList, rulesList);//вкарва данни за състоянията на машината и за нейната лента
-	void setTape(Tape&);//вкарва само лента.Приемаме че имаме инструкции и състояния
 	void proccess(str);//обработва лентата и я връща
 	void processWithoutOutput();//само обработва лентата
 	Tape returnTape();
@@ -51,13 +50,13 @@ public:
 	stateList getStateList();
 
 	//идеята тук е че ще обединим една машина с друга без да ги присвояваме към трета
-	void concat( TuringMachine&);
+	void concat(TuringMachine&);
 
 	
 	/*Приемат се две индивидуални тюринг машини със собствени ленти състояния и инструкции.
 	Функцията представлява разклонение на две тюринг машини относно трета.
 	*/
-	void machineSwitcher(TuringMachine&,TuringMachine&);
+	void machineSwitcher(TuringMachine, TuringMachine);
 
 };
 #endif 
