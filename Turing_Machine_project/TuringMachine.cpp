@@ -1,15 +1,16 @@
 #include "TuringMachine.h"
 #include<iostream>
 
+
 using str = std::string;
 using stData = std::pair<std::string, bool>;
 
-void TuringMachine::copy(Tape _tape, stateList _states, rulesList _instructions)
+void TuringMachine::copy( Tape& _tape, stateList& _states, rulesList& _instructions)
 {
 	tape = _tape;
 	states = _states;
 	instructions = _instructions;
-	head = _tape.getStart();
+	head = 0;
 	currentState = _states[0];
 	cmpSucc = false;
 }
@@ -17,7 +18,7 @@ void TuringMachine::copy(Tape _tape, stateList _states, rulesList _instructions)
 TuringMachine::TuringMachine()
 {
 	cmpSucc = true;
-	head = nullptr;
+	//head = nullptr;
 	currentState = { " ",1 };
 }
 
@@ -42,23 +43,19 @@ TuringMachine& TuringMachine::operator=(TuringMachine& other)
 
 TuringMachine::~TuringMachine()
 {
-	tape.~Tape();
-	states.~stateList();
-	instructions.~rulesList();
-	head = nullptr;
 
 }
 
-bool TuringMachine::isComplete() {
+bool TuringMachine::isComplete()const {
 	return cmpSucc;
 }
 
-void TuringMachine::setData(str statesData, str tapeData,str instructionsData)
+void TuringMachine::setData(const str& statesData,const str& tapeData,const str& instructionsData)
 {
 	std::ifstream is1, is2,is3;
 	
 	is1.open(statesData);
-	states.setStates(statesData);
+	states.input(statesData);
 	is1.close();
 
 	is2.open(tapeData);
@@ -70,21 +67,21 @@ void TuringMachine::setData(str statesData, str tapeData,str instructionsData)
 	instructions.input(instructionsData);
 	is3.close();
 	
-	head = tape.getStart();
+	head = 0;
 	currentState = states.getBuffer().front();
 	cmpSucc = false;
 
 }
 
-void TuringMachine::setData(Tape _tape, stateList _states, rulesList _instructions)
+void TuringMachine::setData(Tape& _tape, stateList& _states, rulesList& _instructions)
 {
 	copy(_tape, _states, _instructions);
 }
 
 void TuringMachine::setTape(Tape& _tape)
 {
-	this->tape = _tape;
-	this->head = _tape.getStart();
+	tape = _tape;
+	//*head = _tape.front();
 }
 
 
@@ -107,40 +104,39 @@ void TuringMachine::processWithoutOutput()
 			/*Ако символът на главата и моментното състояние съвпадат с тези на моментната инструкция,
 			да се извърши преходът.Иначе нищо да не се извършва.
 			*/
-			if (head->val == instructions[i].checkSymbol && currentState.first == instructions[i].checkState) {
+
+			if (tape[head] == instructions[i].checkSymbol && currentState.first == instructions[i].checkState) {
 				//Различни случаи за посоките
 
 				if (instructions[i].direction == 'R') {
 					//проверяваме дали следващо място на лентата съществува.Ако не,го създаваме.
-					if (head->next != nullptr) {
-						head->val = instructions[i].writeNewSymbol;
-						head = head->next;
+					if (head != tape.size() - 1 ) {
+						tape[head] = instructions[i].writeNewSymbol;
+						head ++;
 					}
 					else {
-						head->next = new tapeNode('_');
-						head->val = instructions[i].writeNewSymbol;
-						head->next->previous = head;
-						head = head->next;
+						tape.push_back('~');
+						tape[head] = instructions[i].writeNewSymbol;
+						head++;
 
 					}
 				}
 
 				else if (instructions[i].direction == 'L') {
 					//проверяваме дали предшестващо място на лентата съществува.Ако не,го създаваме.
-					if (head->previous != nullptr) {
-						head->val = instructions[i].writeNewSymbol;
-						head = head->previous;
+					if (head != 0) {
+						tape[head] = instructions[i].writeNewSymbol;
+						head --;
 					}
 					else {
-						head->previous = new tapeNode('_');
-						head->val = instructions[i].writeNewSymbol;
-						head->previous->next = head;
-						head = head->previous;
+						tape[head] = instructions[i].writeNewSymbol;
+						tape.push_front('~');
+						head--;
 
 					}
 				}
 				else if (instructions[i].direction == 'N') {
-					head->val = instructions[i].writeNewSymbol;
+					tape[head] = instructions[i].writeNewSymbol;
 				}
 				else {
 					std::cerr << "Direction like this does not exist";
@@ -165,17 +161,17 @@ void TuringMachine::proccess(str filename)
 }
 
 
-Tape TuringMachine::returnTape()
+Tape TuringMachine::getTape() const
 {
 	return tape;
 }
 
-rulesList TuringMachine::getInstructionList()
+rulesList TuringMachine::getInstructionList() const
 {
 	return this->instructions;
 }
 
-stateList TuringMachine::getStateList()
+stateList TuringMachine::getStateList() const
 {
 	return states;
 }
@@ -186,18 +182,8 @@ stateList TuringMachine::getStateList()
 void TuringMachine::concat(TuringMachine& other)
 {
 	//обединяваме лентите в една
-	
-	tapeNode* tbc = nullptr;
-	tapeNode* curr = other.tape.getStart();
-	tapeNode* prev = this->tape.findEnd();
-	
-	while (curr->next) {
-		tbc = new tapeNode(curr->val);
-		prev->next = tbc;
-		tbc->previous = prev;
-		tbc = tbc->next;
-		prev = prev->next;
-		curr = curr->next;
+	for (int i = 0; i < other.tape.size(); i++) {
+		this->tape.push_back(other.tape[i]);
 	}
 
 	//обединяваме списъците със състояния

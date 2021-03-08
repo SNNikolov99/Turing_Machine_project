@@ -20,12 +20,12 @@ stData stateList::operator[](int n) const
 	return stateBuffer[n];
 }
 
-std::vector<stData> stateList::getBuffer()
+std::vector<stData> stateList::getBuffer() const
 {
 	return stateBuffer;
 }
 
-size_t stateList::size()
+size_t stateList::size()const
 {
 	return stateBuffer.size();
 }
@@ -36,7 +36,7 @@ void stateList::push(const stData d)
 }
 
 //въвежда състояния докато не види състояние с име на следващото състояние halt
-void stateList::setStates(std::string filename)
+void stateList::input(const std::string& filename)
 {
 	std::ifstream is;
 	is.open(filename);
@@ -53,6 +53,11 @@ void stateList::setStates(std::string filename)
 	}
 	
 	is.close();
+}
+
+void stateList::input(const std::vector<stData>& vec)
+{
+	stateBuffer = vec;
 }
 	
 
@@ -80,7 +85,7 @@ stData stateList::getStateByName(std::string Name) {
 		}
 }
 
-void stateList::printList()
+void stateList::print()
 {
 	for(size_t i =0;i<stateBuffer.size();i++) {
 		std::cout << stateBuffer[i].first<< " "<<stateBuffer[i].second<<std::endl;

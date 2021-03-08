@@ -1,6 +1,4 @@
 #pragma once
-#ifndef STATELIST_H
-#define STATELIST_H
 
 #include<iostream>
 #include<vector>
@@ -18,13 +16,14 @@ public:
 	stateList();
 	~stateList();
 	stData operator[](int) const;
-	std::vector <stData> getBuffer();
-	size_t size();
+	std::vector <stData> getBuffer() const;
+	size_t size()const;
 	void push(const stData);
-	void setStates(std::string);//създава състоянията с техните данни те се въвеждат от файл
+	void input(const std::string&);//създава състоянията с техните данни те се въвеждат от файл
+	void input(const std::vector<stData>&);//извлича състоянията от вектор
 	bool isThereAState(std::string);// проверява дали има състояние с това име
 	stData getStateByName(std::string);//връща състоянието с подадено име
-	void printList();//извежда списъка
+	void print();//извежда списъка
 
 };
-#endif
+

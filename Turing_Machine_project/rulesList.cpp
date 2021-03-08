@@ -26,12 +26,12 @@ instruction rulesList::operator[](int n)
 	return list[n];
 }
 
-void rulesList::push(const instruction newInstruction)
+void rulesList::push(const instruction& newInstruction)
 {
 	list.push_back(newInstruction);
 }
 
-void rulesList::input(std::string filename)
+void rulesList::input(const std::string& filename)
 {
 	std::ifstream is;
 	std::string _checkState, _nextStateName, _nextStateNameifFalse;
@@ -50,11 +50,11 @@ void rulesList::input(std::string filename)
 
 }
 
-std::vector<instruction>& rulesList::getList() {
+std::vector<instruction> rulesList::getList() const {
 	return list;
 }
 
-size_t rulesList::size()
+size_t rulesList::size()const
 {
 	return list.size();
 }
@@ -65,6 +65,6 @@ void rulesList::print()
 	for (int i = 0; i < list.size();i++) {
 		std::cout << "("<<list[i].checkSymbol << "," <<list[i].checkState << ","
 			<<list[i].writeNewSymbol<< "," <<list[i].direction << ","<<list[i].nextStateName 
-			<< "," << ")" << std::endl;
+			 << ")" << std::endl;
 	}
 }
