@@ -53,10 +53,6 @@ public:
 	char next();
 	//връща предишният елемент в списъка
 	char prev();
-	//проверява дали следващият елемент съществува
-	//bool existsNext();
-	//проверява дали предишният елемент съществува
-	//bool existsPrev();
 	//извежда инормацията на лентата на конзолата
 	void print()const;
 
@@ -64,33 +60,4 @@ public:
 
 };
 
-/*
 
-class Tape
-{
-private:
-	tapeNode* start;
-	void copy(Tape&);
-	void erase();
-public:
-	Tape();
-	Tape& operator =(Tape&);
-	~Tape();
-	//set-ър за стартовата позиция
-	void setStart(tapeNode*);
-	//Въвеждане на информация от текстов файл
-	void input(std::string);
-	void push_back(tapeNode*);
-	//взима и навързва клетките от буфер
-	tapeNode* inputFromBuffer(std::vector<tapeNode*>);
-	//извеждане на информация в текстов файл
-	void output(std::string);
-	//намира края на лентата
-	tapeNode* findEnd();
-	//извежда инормацията на лентата на конзолата
-	void print();
-	// get-ър за стартовата позиция 
-	tapeNode* getStart();
-
-};
-*/
