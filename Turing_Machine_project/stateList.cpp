@@ -8,6 +8,11 @@ stateList::stateList() {
 
 }
 
+stateList::stateList(std::vector<stData>& vec)
+{
+	stateBuffer = vec;
+}
+
 
 stateList::~stateList()
 {
@@ -85,7 +90,7 @@ stData stateList::getStateByName(std::string Name) {
 		}
 }
 
-void stateList::print()
+void stateList::print()const
 {
 	for(size_t i =0;i<stateBuffer.size();i++) {
 		std::cout << stateBuffer[i].first<< " "<<stateBuffer[i].second<<std::endl;

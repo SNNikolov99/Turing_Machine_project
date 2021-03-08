@@ -68,6 +68,7 @@ void Tape::push_front(const char& c)
 
 char& Tape::operator[](const int& index) 
 {
+	assert(index < tape.size());
 	std::list<char>::iterator it = tape.begin();
 	for (int i = 0; i < index; i++) {
 		++it;

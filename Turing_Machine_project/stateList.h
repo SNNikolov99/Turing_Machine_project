@@ -14,16 +14,17 @@ class stateList
 
 public:
 	stateList();
+	stateList(std::vector<stData>&);
 	~stateList();
-	stData operator[](int) const;
-	std::vector <stData> getBuffer() const;
-	size_t size()const;
 	void push(const stData);
 	void input(const std::string&);//създава състоянията с техните данни те се въвеждат от файл
 	void input(const std::vector<stData>&);//извлича състоянията от вектор
-	bool isThereAState(std::string);// проверява дали има състояние с това име
 	stData getStateByName(std::string);//връща състоянието с подадено име
-	void print();//извежда списъка
+	size_t size()const;
+	stData operator[](int) const;
+	std::vector <stData> getBuffer() const;
+	bool isThereAState(std::string);// проверява дали има състояние с това име
+	void print()const;//извежда списъка
 
 };
 

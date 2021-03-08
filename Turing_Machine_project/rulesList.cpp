@@ -20,7 +20,7 @@ rulesList::~rulesList()
 	list.clear();
 }
 
-instruction rulesList::operator[](int n)
+instruction rulesList::operator[](int n)const
 {
 	assert(n < list.size());
 	return list[n];
@@ -50,6 +50,11 @@ void rulesList::input(const std::string& filename)
 
 }
 
+void rulesList::input(const std::vector<instruction>& vec)
+{
+	list = vec;
+}
+
 std::vector<instruction> rulesList::getList() const {
 	return list;
 }
@@ -59,7 +64,7 @@ size_t rulesList::size()const
 	return list.size();
 }
 
-void rulesList::print()
+void rulesList::print()const
 {
 	
 	for (int i = 0; i < list.size();i++) {
